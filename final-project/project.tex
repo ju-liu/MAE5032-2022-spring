@@ -1,0 +1,103 @@
+\documentclass[12pt]{article}
+\pagestyle{empty}
+\usepackage{amsmath,times,bm,hyperref}
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{xcolor}
+\lstset { %
+    language=C++,
+    backgroundcolor=\color{black!5}, % set backgroundcolor
+    basicstyle=\footnotesize,% basic font setting
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Do not modify the dimensions of the page
+\setlength{\topmargin}{0mm}
+\setlength{\headheight}{0mm}
+\setlength{\headsep}{0mm}
+%% 25.4 -25.4 = 0
+\setlength{\topmargin}{0mm}
+%% 25.4 -25.4 = 0
+\setlength{\oddsidemargin}{0mm}
+%% 210 -25(left) -25(right) = 160
+\setlength{\textwidth}{160mm}
+%% 297 -25(top) -30(bottom) = 242
+\setlength{\textheight}{242mm}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{12pt}
+% Do not modify the dimensions of the page
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\begin{center}
+% TITLE: replace text with your abstract title WITHOUT full stop
+\textbf{\Large
+Class Final Project
+}
+
+% AUTHOR/AFFILIATION: handled by authblk. 
+% Use only one of the two following methods for author listing. Delete or comment out the other.
+% Add/remove authors/affiliations as necessary, complete following the template without adding additional superscript/footnotes  
+
+% 1- Authors have the same affiliation:
+% ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+%%%%% AFFILIATIONS %%%%%
+
+\end{center}
+
+In this project, we combine some of the theory and practical skills learned in this class to address a problem. You will be grouped into 16 groups, with 2 people in each group.
+
+We consider the transient heat equation in a two-dimensional unit square $\Omega := (0,1)\times(0,1)$. The boundary of the domain $\Gamma$ can be decomposed into
+\begin{description}
+\item the bottom face $\Gamma_b := \left\lbrace (x,y) : x \in (0,1), y = 0 \right\rbrace$;
+\item the top face $\Gamma_t := \left\lbrace (x,y) : x \in (0,1),  y = 1 \right\rbrace$;
+\item the left face $\Gamma_l := \left\lbrace (x,y) : x=0, y \in (0,1) \right\rbrace$;
+\item the right face $\Gamma_r := \left\lbrace (x,y) : x=1, y \in (0,1) \right\rbrace$.
+\end{description}
+Let $f$ be the heat supply per unit volume, $u$ be the temperature,  $\rho$ be the density, $c$ be the heat capacity, $u_0$ be the initial temperature, $\kappa$ be the conductivity, $n_x$ and $n_y$ be the Cartesian components of the unit outward normal vector . The boundary data involves the prescribed temperature $g$ on $\Gamma_g$ and heat flux $h$ on $\Gamma_h$. The boundary $\Gamma$ admits a non-overlapping decomposition: $\Gamma = \overline{\Gamma_{g} \cup \Gamma_h}$ and $\emptyset = \Gamma_g \cap \Gamma_h$. The transient heat equation may be stated as follows.
+
+\begin{align*}
+\rho c \frac{\partial u}{\partial t} - \kappa \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} \right) &= f \quad \mbox{ on } \Omega \times (0,T) \\
+u &= g \quad \mbox{ on } \Gamma_{g} \times (0,T) \\
+\kappa \frac{\partial u}{\partial x} n_{x} + \kappa \frac{\partial u}{\partial y} n_{y} &= h \quad \mbox{ on } \Gamma_h \times (0,T) \\
+u|_{t=0} &= u_0 \quad \mbox{ in } \Omega
+\end{align*}
+
+With the instructor's permission, you may choose a different physical problem associated with your own research.
+
+\section{Code development}
+You are expected to develop a numerical software that can address this mathematical model. In specific, you can choose finite difference method for spatial discretization; you are expected to use both explicit Euler and implicit Euler methods to treat the problem in time. The space and temporal resolutions are assumed to be \textbf{uniform}. For both time marching methods, you need to perform basic numerical analysis to delineate the stability property of the adopted scheme. In your code, you will have to assemble a sparse matrix representing the discrete heat equation. You are recommended to use PETSc to handle your sparse matrix and the subsequent linear system solution procedure. 
+
+The above numerical methods and the PETSc library are \textbf{recommended}. With the instructor's permission, you may choose finite element, finite volume, and other explicit/implicit time marching schemes and use other linear algebra library. More detailed requirement as listed in below.
+\begin{enumerate}
+\item All your work will be provided in a project report with all technical details provided. Bonus points will be given to report written in LaTex.
+\item You need to provide a Makefile or CMake for building your software on Tai-Yi. You shall be able to test different compiling flags in your Makefile or CMake. Makesure for provding a README file on how to build and run your code. Provide a job script to run the project on the cluster.
+\item You, as a group, shall do version control of your project with GitHub or Gitee. Add the teaching team to your repository before the final week so we can see your work history. \textbf{In particular, we expect to see a collaborative work over weeks in your version control system.}
+\end{enumerate}
+
+\section{Code testing}
+\subsection{Method stability}
+Let $\Delta x$ and $\Delta t$ be the spatial and temporal mesh size, which are assumed to be uniform. Take $\Delta x = 10^{-2}$ and try various time steps with the explicit and implicit methods. The calculation may diverge with certain time step sizes. What is the maximum time step size that can deliver stable calculations? Does the result match with the theoretical analysis?
+
+\subsection{Manufactured solution method}
+With your code developed, you are responsible for verifying your code using the manufactured solution method. Assume you have a solution taken an analytic form, you may put the solution into the original differential equation and obtain the analytic forms of $f$, $g$, and $h$. With the obtained analytic forms, you may run your code and obtain numerical solutions with different spatial and temporal resolutions. Let $\bm u_{exact}$ be the vector of the exact solution values at the grid points, and let $\bm u_{num}$ be the vector of the numerical solution values at the grid points. The error is defined as $\bm e := \mathrm{max}_{1 \leq i \leq n} |  u_{\mathrm{exact}, i} -  u_{\mathrm{num}, i}| $, where $u_{\mathrm{exact}, i}$ and $u_{\mathrm{num}, i}$ are the $i$-th component of the solution vectors with the vector length being $n$. The error is related to the mesh resolution as $e \approx C_1 \Delta x^{\alpha} + C_2 \Delta t^{\beta}$. To determine the value of $\alpha$ and $\beta$, you need to progressively refine your mesh and document the error value with the corresponding mesh size. Since there are two error sources, you need to first keep a very fine temporal mesh to rule out the temporal error source and run with different $\Delta x$. Use a straight line to approximate the values of $\log(e)$ against $\log(\Delta x)$. The slope of the straight line gives $\alpha$. In a similar fashion, fix the spatial mesh to be reasonably fine, and calculate the error with different $\Delta t$. Use the results to determine $\beta$.
+
+\section{Parallelism}
+In this section, we will examine and improve the parallel efficiency of the developed code.
+
+\subsection{Parallel matrix assembly}
+When you use 
+
+
+
+
+
+
+
+
+
+\end{document}
+
