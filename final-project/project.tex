@@ -48,7 +48,7 @@ MAE5032 Final Project
 
 \end{center}
 
-In this project, we combine some of the theory and practical skills learned in this class to address a problem. You have two options. You can work as a group, with 2 people in each group, or you can work individually. For people working in pairs, you are required to work on two-dimensional problems (Problem A by default).
+In this project, we combine some of the theory and practical skills learned in this class to address a simple problem. You have two options. You can work as a group, with 2 people in each group, or you can work individually. For people working in pairs, you are required to work on two-dimensional problems (Problem A by default).
 
 \textbf{Problem A}
 
@@ -84,14 +84,13 @@ u|_{t=0} &= u_0 \quad \mbox{ in } \Omega.
 With the instructor's permission, you may choose a different physical problem associated with your own research. You are encouraged to work on problems or projects from your computational solid/fluid mechanics class.
 
 
-
 \section{Code development}
 You are expected to develop a numerical software that can address this mathematical model. In specific, you can choose finite difference method for spatial discretization; you are expected to use both explicit Euler and implicit Euler methods to treat the problem in time. The space and temporal resolutions are assumed to be \textbf{uniform}. For both time marching methods, you need to perform basic numerical analysis to delineate the stability property of the adopted scheme. In your code, you will have to assemble a sparse matrix representing the discrete heat equation. You are recommended to use PETSc to handle your sparse matrix and the subsequent linear system solution procedure. 
 
 The above numerical methods and the PETSc library are \textbf{recommended}. With the instructor's permission, you may choose finite element, finite volume, and other explicit/implicit time marching schemes and use other linear algebra library. More detailed requirement as listed in below.
 
 \begin{enumerate}
-\item You need to enable a restart facility using HDF5. Write the values of the current solutions every 10 iterations. You need to record necessary data, such as $\Delta x$, $\Delta t$, etc., as well. Add a command line argument to your program that causes it to read the restart file and resume execution by reading all data from the restart file. Test the correctness of this implementation.
+\item You need to enable a restart facility using HDF5. Write the values of the current solutions every 10 iterations. You need to record necessary data, such as $\Delta x$, $\Delta t$, etc. Add a command line argument to your program that causes it to read the restart file and resume execution by reading all data from the restart file. Test the correctness of this implementation by comparing restarted and non-restarted simulation results.
 
 \item Your code shall be coded in a defensive manner. We expect to see detailed comments, error checks, assertions, etc. in your code. There should be no warning message when compiling your code.
 
@@ -124,7 +123,9 @@ Since our goal is to obtain the steady state solution, we wish to use large time
 With your code developed, you are responsible for verifying your code using the manufactured solution method. Assume you have a solution taken an analytic form, you may put the solution into the original differential equation and obtain the analytic forms of $f$, $g$, and $h$. With the obtained analytic forms, you may run your code and obtain numerical solutions with different spatial and temporal resolutions. Let $\bm u_{exact}$ be the vector of the exact solution values at the grid points, and let $\bm u_{num}$ be the vector of the numerical solution values at the grid points. The error is defined as $e := \mathrm{max}_{1 \leq i \leq n} |  u_{\mathrm{exact}, i} -  u_{\mathrm{num}, i}| $, where $u_{\mathrm{exact}, i}$ and $u_{\mathrm{num}, i}$ are the $i$-th component of the solution vectors with the vector length being $n$. The error is related to the mesh resolution as $e \approx C_1 \Delta x^{\alpha} + C_2 \Delta t^{\beta}$. To determine the value of $\alpha$ and $\beta$, you need to progressively refine your mesh and document the error value with the corresponding mesh size. Since there are two error sources, you need to first keep a very fine temporal mesh to rule out the temporal error source and run with different $\Delta x$. Use a straight line to approximate the values of $\log(e)$ against $\log(\Delta x)$. The slope of the straight line gives $\alpha$. In a similar fashion, fix the spatial mesh to be reasonably fine, and calculate the error with different $\Delta t$. Use the results to determine $\beta$.
 
 \section{Parallelism}
-In this section, we will examine and improve the parallel efficiency of the developed code. In your code, there are two parts that need to be parallelized. One is the assembly of the matrix, and one is the iteration over time. Monitor the time spent on those sections. Perform the fixed-size scalabiling and isogranular scaling analysis for both explicit and implicit solvers.
+In this section, we will examine and improve the parallel efficiency of the developed code. In your code, there are two parts that need to be parallelized. One is the assembly of the matrix, and one is the iteration over time. Monitor the time spent on those sections. For the explicit method, matrix-vector multiplication is performed over time; for the implicit method, a linear system is solver over time. The PETSc library can help you automatically handle these. You shall pay attention to parallelize the matrix assembly, making sure that part is properly parallelized.
+
+Perform the fixed-size scalabiling and isogranular scaling analysis for both explicit and implicit solvers.
 
 In your implicit solver, you will have to solve a linear system in each time step. Thus, the choice of linear solver (iterative method and preconditioning technique) can impact the parallel performance. Investigate the following PC options from PETSc for your parallel test: (a) Jacobi; (b) Additive Schwarz; (c) LU with MUMPS. You may refer the PETSc manual for references.
 
