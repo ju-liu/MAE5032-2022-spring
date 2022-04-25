@@ -24,11 +24,9 @@ int main() {
 
   file_id = H5Fopen(FILE, H5F_ACC_RDWR, H5P_DEFAULT);
 
-
   dataset_id = H5Dopen(file_id, "/IntArray", H5P_DEFAULT);
 
   //  printf("original dset_data[0][0][0]:%2d\n", dset_data[0][0][0]);
-
 
   status = H5Dread(dataset_id, H5T_NATIVE_INT, H5S_ALL, H5S_ALL, H5P_DEFAULT, dset_data);
   printf("read from h5 dset_data[3][1][2]:%2d\n", dset_data[3][1][2]);
