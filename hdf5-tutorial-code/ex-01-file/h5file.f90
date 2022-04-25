@@ -26,4 +26,5 @@ PROGRAM FILEEXAMPLE
   !    Close FORTRAN interface.
   !
   CALL h5close_f(error)
+
 END PROGRAM FILEEXAMPLE
