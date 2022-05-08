@@ -4,24 +4,25 @@
  */
 
 #include "hdf5.h"
-#define FILE "dset.h5"
+#define FILE "SDS.h5"
 
 int main() {
 
    hid_t       file_id, dataset_id, dataspace_id;  /* identifiers */
-   hsize_t     dims[2];
+   hsize_t     dims[3];
    herr_t      status;
 
    /* Create a new file using default properties. */
    file_id = H5Fcreate(FILE, H5F_ACC_TRUNC, H5P_DEFAULT, H5P_DEFAULT);
 
    /* Create the data space for the dataset. */
-   dims[0] = 4; 
-   dims[1] = 6; 
-   dataspace_id = H5Screate_simple(2, dims, NULL);
+   dims[0] = 5; 
+   dims[1] = 6;
+   dims[2] = 4;
+   dataspace_id = H5Screate_simple(3, dims, NULL);
 
    /* Create the dataset. */
-   dataset_id = H5Dcreate2(file_id, "/dset", H5T_STD_I32BE, dataspace_id, 
+   dataset_id = H5Dcreate2(file_id, "/IntArray", H5T_STD_I32BE, dataspace_id, 
                           H5P_DEFAULT, H5P_DEFAULT, H5P_DEFAULT);
 
    /* End access to the dataset and release resources used by it. */
