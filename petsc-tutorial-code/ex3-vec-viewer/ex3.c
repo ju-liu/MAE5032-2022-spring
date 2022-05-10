@@ -1,4 +1,3 @@
-
 static char help[] = "Parallel vector layout.\n\n";
 
 /*T
@@ -14,7 +13,7 @@ T*/
      petscsys.h       - base PETSc routines   petscis.h     - index sets
      petscviewer.h - viewers
 */
-#include <petscvec.h>
+#include <petsc.h>
 
 int main(int argc,char **argv)
 {
@@ -91,6 +90,15 @@ int main(int argc,char **argv)
      View the vector
      */
   ierr = VecView(x, PETSC_VIEWER_STDOUT_WORLD);CHKERRQ(ierr);
+
+  /*
+   * Viewer to output in HDF5 format
+   */
+  PetscViewer pv;
+  PetscViewerCreate(PETSC_COMM_WORLD,&pv);
+  PetscViewerASCIIOpen(PETSC_COMM_WORLD,"vector.dat",&pv);
+  VecView(x, pv);
+  PetscViewerDestroy(&pv);
 
   /*
      Free work space.  All PETSc objects should be destroyed when they
