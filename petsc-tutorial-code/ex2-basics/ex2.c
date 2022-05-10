@@ -7,8 +7,6 @@ static char help[] = "Introductory example that illustrates printing.\n\n";
    Processors: n
 T*/
 
-
-
 #include <petscsys.h>
 int main(int argc,char **argv)
 {
@@ -53,7 +51,7 @@ int main(int argc,char **argv)
     appear in any particular order.
   */
 
-  ierr = PetscPrintf(PETSC_COMM_SELF,"[%d] Jumbled Hello World\n",rank);CHKERRQ(ierr);
+  ierr = PetscPrintf(PETSC_COMM_SELF,"Hello World from rank %d \n",rank);CHKERRQ(ierr);
 
   /*
      Always call PetscFinalize() before exiting a program.  This routine
