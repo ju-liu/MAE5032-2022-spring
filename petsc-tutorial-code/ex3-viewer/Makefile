@@ -1,7 +1,7 @@
 
 # -*- mode: makefile -*-
-PETSC_DIR := /Users/juliu/lib/petsc-3.16.6
-PETSC_ARCH := arch-darwin-c-debug
+PETSC_DIR := /Users/juliu/lib/petsc-3.15.5-debug
+PETSC_ARCH := .
 
 # This sample (GNU) Makefile can be used to compile PETSc applications with a single
 # source file and can be easily modified to compile multi-file applications.
@@ -52,7 +52,7 @@ print:
 	@echo CUDA_INCLUDE=$(CUDA_INCLUDE)
 
 # Files
-EXEC := ex1.out
+EXEC := ex3.out
 SRC := $(wildcard *.c)
 OBJ := $(patsubst %.c,%.o,$(SRC))
 
