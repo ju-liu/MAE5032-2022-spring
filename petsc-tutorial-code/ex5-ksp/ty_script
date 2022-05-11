@@ -1,9 +1,9 @@
 #!/bin/bash
-#BSUB -J steady-cfd
+#BSUB -J petsc-test
 #BSUB -q ser
 #BSUB -n 5
-#BSUB -e %J-cfd.err
-#BSUB -o %J-cfd.out
+#BSUB -e %J-petsc.err
+#BSUB -o %J-petsc.out
 
 module purge
 module load intel/2018.4
