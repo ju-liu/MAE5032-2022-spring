@@ -4,6 +4,8 @@
 
 #mpirun -np 1 ./ex1.out -snes_view
 
+#mpirun -np 1 ./ex1.out -help
+
 #mpirun -np 1 ./ex1.out -snes_monitor -snes_view
 
 #mpirun -np 1 ./ex1.out -snes_type newtontr -snes_monitor -snes_view

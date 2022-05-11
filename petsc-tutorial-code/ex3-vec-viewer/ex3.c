@@ -26,6 +26,7 @@ int main(int argc,char **argv)
   ierr = PetscInitialize(&argc,&argv,(char*)0,help);if (ierr) return ierr;
   ierr = MPI_Comm_rank(PETSC_COMM_WORLD,&rank);CHKERRQ(ierr);
 
+  /* enable passing -n as a command line argument */
   ierr = PetscOptionsGetInt(NULL,NULL,"-n",&n,NULL);CHKERRQ(ierr);
 
   /*
@@ -45,6 +46,8 @@ int main(int argc,char **argv)
      which vector are locally owned.
   */
   ierr = VecGetOwnershipRange(x,&istart,&iend);CHKERRQ(ierr);
+
+  PetscPrintf(PETSC_COMM_SELF, "rank [%d]: istart = %d iend = %d \n", rank, istart, iend );
 
   /* --------------------------------------------------------------------
      Set the vector elements.
@@ -110,9 +113,4 @@ int main(int argc,char **argv)
   return ierr;
 }
 
-/*TEST
-
-test:
-nsize: 2
-
-TEST*/
+// EOF
