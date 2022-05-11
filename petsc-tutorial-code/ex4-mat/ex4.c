@@ -6,13 +6,16 @@ int main(int argc,char **argv)
 {
   Mat             A;
   MPI_Comm        comm;
+  PetscMPIInt     rank;
   PetscInt        n=5,m=5,*dnnz,*onnz,i,rstart,rend,M,N;
   PetscErrorCode  ierr;
 
   ierr = PetscInitialize(&argc,&argv,0,help);if (ierr) return ierr;
   comm = MPI_COMM_WORLD;
+  MPI_Comm_rank(comm, &rank);
   ierr = PetscMalloc2(m,&dnnz,m,&onnz);CHKERRQ(ierr);
-  for (i=0; i<m; i++) {
+  for (i=0; i<m; i++) 
+  {
     dnnz[i] = 1;
     onnz[i] = 1;
   }
@@ -24,11 +27,13 @@ int main(int argc,char **argv)
   ierr = MatSetOption(A,MAT_NEW_NONZERO_ALLOCATION_ERR,PETSC_TRUE);CHKERRQ(ierr);
   ierr = MatGetOwnershipRange(A,&rstart,&rend);CHKERRQ(ierr);
   ierr = MatGetSize(A,&M,&N);CHKERRQ(ierr);
-  for (i=rstart; i<rend; i++) {
+  ierr = PetscPrintf(comm, "Matrix size is %d by %d \n", M, N);
+  ierr = PetscPrintf(PETSC_COMM_SELF, "rank [%d] rstart = %d , rend = %d \n", rank, rstart, rend);
+  for (i=rstart; i<rend; i++) 
+  {
     ierr = MatSetValue(A,i,i,2.0,INSERT_VALUES);CHKERRQ(ierr);
-    if (rend<N) {
+    if (rend<N) 
       ierr = MatSetValue(A,i,rend,1.0,INSERT_VALUES);CHKERRQ(ierr);
-    }
   }
   ierr = MatAssemblyBegin(A,MAT_FINAL_ASSEMBLY);CHKERRQ(ierr);
   ierr = MatAssemblyEnd(A,MAT_FINAL_ASSEMBLY);CHKERRQ(ierr);

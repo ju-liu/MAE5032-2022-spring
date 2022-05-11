@@ -1,18 +1,18 @@
 static char help[] = "Parallel vector layout.\n\n";
 
 /*T
-   Concepts: vectors^setting values
-   Concepts: vectors^local access to
-   Concepts: vectors^drawing vectors;
-   Processors: n
+Concepts: vectors^setting values
+Concepts: vectors^local access to
+Concepts: vectors^drawing vectors;
+Processors: n
 T*/
 
 /*
-  Include "petscvec.h" so that we can use vectors.  Note that this file
-  automatically includes:
-     petscsys.h       - base PETSc routines   petscis.h     - index sets
-     petscviewer.h - viewers
-*/
+   Include "petscvec.h" so that we can use vectors.  Note that this file
+   automatically includes:
+   petscsys.h       - base PETSc routines   petscis.h     - index sets
+   petscviewer.h - viewers
+   */
 #include <petsc.h>
 
 int main(int argc,char **argv)
@@ -35,7 +35,7 @@ int main(int argc,char **argv)
      the vector format (currently parallel or sequential) is
      determined at runtime.  Also, the parallel partitioning of
      the vector is determined by PETSc at runtime.
-  */
+     */
   ierr = VecCreate(PETSC_COMM_WORLD,&x);CHKERRQ(ierr);
   ierr = VecSetSizes(x,PETSC_DECIDE,n);CHKERRQ(ierr);
   ierr = VecSetFromOptions(x);CHKERRQ(ierr);
@@ -44,18 +44,18 @@ int main(int argc,char **argv)
      PETSc parallel vectors are partitioned by
      contiguous chunks of rows across the processors.  Determine
      which vector are locally owned.
-  */
+     */
   ierr = VecGetOwnershipRange(x,&istart,&iend);CHKERRQ(ierr);
 
   PetscPrintf(PETSC_COMM_SELF, "rank [%d]: istart = %d iend = %d \n", rank, istart, iend );
 
   /* --------------------------------------------------------------------
      Set the vector elements.
-      - Always specify global locations of vector entries.
-      - Each processor can insert into any location, even ones it does not own
-      - In this case each processor adds values to all the entries,
-         this is not practical, but is merely done as an example
-   */
+     - Always specify global locations of vector entries.
+     - Each processor can insert into any location, even ones it does not own
+     - In this case each processor adds values to all the entries,
+     this is not practical, but is merely done as an example
+     */
   if( rank == 0 )
   {
     for (i=0; i<n; i++) 
