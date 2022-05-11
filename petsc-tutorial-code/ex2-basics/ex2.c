@@ -1,4 +1,3 @@
-
 static char help[] = "Introductory example that illustrates printing.\n\n";
 
 /*T
@@ -64,9 +63,4 @@ int main(int argc,char **argv)
   return ierr;
 }
 
-
-/*TEST
-
-   test:
-
-TEST*/
+// EOF
