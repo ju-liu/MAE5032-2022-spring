@@ -85,6 +85,7 @@ int main(int argc,char **argv)
      does NOT involve a copy
      */
   ierr = VecGetLocalSize(x,&nlocal);CHKERRQ(ierr);
+  PetscPrintf(PETSC_COMM_SELF, "rank [%d]: nlocal = %d \n", rank, nlocal );
   ierr = VecGetArray(x,&array);CHKERRQ(ierr);
   for (i=0; i<nlocal; i++) array[i] = rank + 1;
   ierr = VecRestoreArray(x,&array);CHKERRQ(ierr);
