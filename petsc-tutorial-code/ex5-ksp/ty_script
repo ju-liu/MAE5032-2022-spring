@@ -17,5 +17,5 @@ mpirun -np 5 ./ex5.out -ksp_type gmres \
   -ksp_rtol 1.0e-10 -sub_ksp_type richardson \
   -sub_pc_type icc -ksp_monitor_short \
   -ksp_converged_reason \
-  -ksp_view
-
+  -ksp_view \
+  -log_view > $LSB_JOBID.log 2>&1
