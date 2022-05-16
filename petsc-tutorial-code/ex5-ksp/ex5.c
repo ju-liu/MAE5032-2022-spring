@@ -73,12 +73,15 @@ int main(int argc,char **args)
      For matrix assembly, each processor contributes entries for
      the part that it owns locally.
   */
-  if (!rstart) {
+  if (!rstart) 
+  {
     rstart = 1;
     i      = 0; col[0] = 0; col[1] = 1; value[0] = 2.0; value[1] = -1.0;
     ierr   = MatSetValues(A,1,&i,2,col,value,INSERT_VALUES);CHKERRQ(ierr);
   }
-  if (rend == n) {
+  
+  if (rend == n) 
+  {
     rend = n-1;
     i    = n-1; col[0] = n-2; col[1] = n-1; value[0] = -1.0; value[1] = 2.0;
     ierr = MatSetValues(A,1,&i,2,col,value,INSERT_VALUES);CHKERRQ(ierr);
@@ -86,7 +89,8 @@ int main(int argc,char **args)
 
   /* Set entries corresponding to the mesh interior */
   value[0] = -1.0; value[1] = 2.0; value[2] = -1.0;
-  for (i=rstart; i<rend; i++) {
+  for (i=rstart; i<rend; i++) 
+  {
     col[0] = i-1; col[1] = i; col[2] = i+1;
     ierr   = MatSetValues(A,1,&i,3,col,value,INSERT_VALUES);CHKERRQ(ierr);
   }
@@ -95,10 +99,15 @@ int main(int argc,char **args)
   ierr = MatAssemblyBegin(A,MAT_FINAL_ASSEMBLY);CHKERRQ(ierr);
   ierr = MatAssemblyEnd(A,MAT_FINAL_ASSEMBLY);CHKERRQ(ierr);
 
+  //ierr = MatView(A,PETSC_VIEWER_STDOUT_WORLD);CHKERRQ(ierr);
+
   /*
      Set exact solution; then compute right-hand-side vector.
   */
   ierr = VecSet(u,one);CHKERRQ(ierr);
+
+  //ierr = VecView(u,PETSC_VIEWER_STDOUT_WORLD);CHKERRQ(ierr);
+
   ierr = MatMult(A,u,b);CHKERRQ(ierr);
 
   /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
