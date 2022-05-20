@@ -1,7 +1,7 @@
 
 # -*- mode: makefile -*-
-#PETSC_DIR := /Users/juliu/lib/petsc-3.15.5-debug
-PETSC_DIR  := /work/mae-liuj/lib/petsc-3.14.6-opt
+PETSC_DIR := /Users/juliu/lib/petsc-3.15.5-debug
+#PETSC_DIR  := /work/mae-liuj/lib/petsc-3.14.6-opt
 PETSC_ARCH := .
 
 # This sample (GNU) Makefile can be used to compile PETSc applications with a single
